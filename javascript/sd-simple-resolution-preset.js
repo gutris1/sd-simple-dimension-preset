@@ -1,5 +1,5 @@
 function LoadSimpleAR(box) {
-  fetch("file=extensions/sd-simple-aspect-ratio/simple-ar.txt", { cache: "no-store" })
+  fetch("file=extensions/sd-simple-resolution-preset/simple-preset.txt", { cache: "no-store" })
     .then((response) => {
       if (!response.ok) throw new Error('Failed to fetch ar.txt');
       return response.text();
