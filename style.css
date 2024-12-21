@@ -1,0 +1,41 @@
+#Simple-R {
+	overflow: visible;
+	position: relative;
+}
+
+#Simple-R-Main-Button {
+	padding: 0;
+  border: none;
+}
+
+#Simple-R-Box {
+	position: absolute;
+	width: 11.4rem;
+	z-index: 9999;
+	border: 2px solid var(--primary-500);
+	border-radius: 0.8rem;
+	padding: 5px;
+	background: var(--background-fill-primary);
+	text-align: center;
+}
+
+#Simple-R-Label {
+	margin-top: 10px;
+	text-align: center;
+}
+
+#Simple-R-Button {
+	margin: 2px;
+	padding-right: 5px;
+	padding-left: 5px;
+	border: 1px solid var(--primary-500);
+	background: transparent;
+	border-radius: 0.25rem;
+	cursor: pointer;
+  transition: 0.4s ease;
+}
+
+#Simple-R-Button:hover {
+  color: var(--primary-500);
+  background: var(--input-background-fill);
+}
