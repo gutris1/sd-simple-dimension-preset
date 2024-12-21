@@ -1,7 +1,7 @@
-function LoadSimpleAR(box) {
+function LoadSimplePreset(box) {
   fetch("file=extensions/sd-simple-resolution-preset/simple-preset.txt", { cache: "no-store" })
     .then((response) => {
-      if (!response.ok) throw new Error('Failed to fetch ar.txt');
+      if (!response.ok) throw new Error('Failed to fetch simple-preset.txt');
       return response.text();
     })
     .then((text) => {
@@ -14,20 +14,20 @@ function LoadSimpleAR(box) {
 
         if (textLine.startsWith('>')) {
           Label = textLine.replace('>', '').trim();
-          const ARLabel = document.createElement('div');
-          ARLabel.id = 'SimpleAR-label';
-          ARLabel.innerText = `${Label}`;
-          BoxContent += ARLabel.outerHTML;
+          const SimpleRLabel = document.createElement('div');
+          SimpleRLabel.id = 'Simple-R-Label';
+          SimpleRLabel.innerText = `${Label}`;
+          BoxContent += SimpleRLabel.outerHTML;
         } else if (textLine.includes('x') && !textLine.startsWith('#')) {
           const [width, height] = textLine.split('x').map(Number);
 
           if (!isNaN(width) && !isNaN(height)) {
-            const ARButton = document.createElement('button');
-            ARButton.id = 'SimpleAR-button';
-            ARButton.setAttribute('data-width', width);
-            ARButton.setAttribute('data-height', height);
-            ARButton.innerText = `${width} x ${height}`;
-            BoxContent += ARButton.outerHTML;
+            const SimpleRButton = document.createElement('button');
+            SimpleRButton.id = 'Simple-R-Button';
+            SimpleRButton.setAttribute('data-width', width);
+            SimpleRButton.setAttribute('data-height', height);
+            SimpleRButton.innerText = `${width} x ${height}`;
+            BoxContent += SimpleRButton.outerHTML;
           }
         }
       });
@@ -68,11 +68,11 @@ function LoadSimpleAR(box) {
     })
     .catch((err) => {
       console.error(err);
-      box.innerText = "Simple Aspect Ratio Die.";
+      box.innerText = "Simple Resolution Preset Die.";
     });
 }
 
-function SimpleARBoxPosition(btn, box) {
+function SimpleRBoxPosition(btn, box) {
   const btnRect = btn.getBoundingClientRect();
   const viewport = window.innerWidth;
   const mainButton = 190;
@@ -88,14 +88,14 @@ function SimpleARBoxPosition(btn, box) {
   }
 }
 
-function AddSimpleAREvent(btn, box) {
+function SimpleREvent(btn, box) {
   btn.addEventListener('click', () => {
-    const ARBox = box.style.display === 'none' ? 'block' : 'none';
-    box.style.display = ARBox;
+    const SimpleRBox = box.style.display === 'none' ? 'block' : 'none';
+    box.style.display = SimpleRBox;
 
-    if (ARBox === 'block') {
+    if (SimpleRBox === 'block') {
       btn.style.border = '2px solid var(--primary-500)';
-      SimpleARBoxPosition(btn, box);
+      SimpleRBoxPosition(btn, box);
     } else {
       btn.style.border = 'none';
     }
@@ -106,13 +106,13 @@ onUiLoaded(function () {
   const rows = gradioApp().querySelectorAll("#txt2img_dimensions_row .form, #img2img_dimensions_row .form");
   const switchBtns = gradioApp().querySelectorAll("#txt2img_res_switch_btn, #img2img_res_switch_btn");
 
-  const SimpleAR = document.createElement('div');
-  SimpleAR.id = 'SimpleAR';
+  const SimpleRdiv = document.createElement('div');
+  SimpleRdiv.id = 'Simple-R';
 
-  const SimpleARButton = switchBtns[0].cloneNode(true);
-  SimpleARButton.id = 'SimpleAR-main-button';
-  SimpleARButton.title = 'Simple Aspect Ratio';
-  SimpleARButton.innerHTML = `
+  const SimpleRButton = switchBtns[0].cloneNode(true);
+  SimpleRButton.id = 'Simple-R-Main-Button';
+  SimpleRButton.title = 'Simple Resolution Preset';
+  SimpleRButton.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg"
         x="0px" y="0px" width="40" height="40"
         viewBox="0 0 24 18" fill="transparent">
@@ -128,37 +128,37 @@ onUiLoaded(function () {
     </svg>
   `;
 
-  const SimpleARBox = document.createElement('div');
-  SimpleARBox.id = 'SimpleAR-box';
-  SimpleARBox.classList.add('prose');
-  SimpleARBox.style.display = 'none';
+  const SimpleRBox = document.createElement('div');
+  SimpleRBox.id = 'Simple-R-Box';
+  SimpleRBox.classList.add('prose');
+  SimpleRBox.style.display = 'none';
 
-  SimpleAR.appendChild(SimpleARButton);
-  SimpleAR.appendChild(SimpleARBox);
+  SimpleRdiv.appendChild(SimpleRButton);
+  SimpleRdiv.appendChild(SimpleRBox);
 
   rows.forEach((row, index) => {
-    const clone = index === 0 ? SimpleAR : SimpleAR.cloneNode(true);
+    const clone = index === 0 ? SimpleRdiv : SimpleRdiv.cloneNode(true);
     row.insertBefore(clone, switchBtns[index]);
 
-    const btn = clone.querySelector('#SimpleAR-main-button');
-    const box = clone.querySelector('#SimpleAR-box');
+    const btn = clone.querySelector('#Simple-R-Main-Button');
+    const box = clone.querySelector('#Simple-R-Box');
 
-    LoadSimpleAR(box);
-    AddSimpleAREvent(btn, box);
+    LoadSimplePreset(box);
+    SimpleREvent(btn, box);
   });
 
   window.addEventListener('resize', () => {
-    document.querySelectorAll('#SimpleAR-box').forEach((box, index) => {
+    document.querySelectorAll('#Simple-R-Box').forEach((box, index) => {
       if (box.style.display === 'block') {
-        const btn = box.parentElement.querySelector('#SimpleAR-main-button');
-        SimpleARBoxPosition(btn, box);
+        const btn = box.parentElement.querySelector('#Simple-R-Main-Button');
+        SimpleRBoxPosition(btn, box);
       }
     });
   });
 
   function ClickOutsideAR(e) {
-    document.querySelectorAll('#SimpleAR-box').forEach(box => {
-      const btn = box.parentElement.querySelector('#SimpleAR-main-button');
+    document.querySelectorAll('#Simple-R-Box').forEach(box => {
+      const btn = box.parentElement.querySelector('#Simple-R-Main-Button');
       if (box.style.display === 'block' && !box.contains(e.target) && !btn.contains(e.target)) {
         box.style.display = 'none';
         btn.style.border = 'none';
