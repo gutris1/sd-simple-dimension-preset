@@ -1,5 +1,5 @@
 function LoadSimplePreset(box) {
-  fetch("file=extensions/sd-simple-resolution-preset/simple-preset.txt", { cache: "no-store" })
+  fetch("file=extensions/sd-simple-dimension-preset/simple-preset.txt", { cache: "no-store" })
     .then((response) => {
       if (!response.ok) throw new Error('Failed to fetch simple-preset.txt');
       return response.text();
@@ -68,7 +68,7 @@ function LoadSimplePreset(box) {
     })
     .catch((err) => {
       console.error(err);
-      box.innerText = "Simple Resolution Preset Die.";
+      box.innerText = "Simple Dimension Preset Die.";
     });
 }
 
@@ -119,7 +119,7 @@ onUiLoaded(function () {
 
   const SimpleRButton = switchBtns[0].cloneNode(true);
   SimpleRButton.id = 'Simple-R-Main-Button';
-  SimpleRButton.title = 'Simple Resolution Preset';
+  SimpleRButton.title = 'Simple Dimension Preset';
   SimpleRButton.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg"
         x="0px" y="0px" width="40" height="40"
