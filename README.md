@@ -1,4 +1,4 @@
-# SD Simple Resolution Preset
+# SD Simple Dimension Preset
 
 since SDXL, aspect ratios are less relevant due to the weird dimensions used in the models.<br>
 This extension simply inserts those weird width and height values without thinking about what kind of aspect ratio that is.<br>
