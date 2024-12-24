@@ -1,75 +1,71 @@
-function LoadSimplePreset(box) {
-  fetch("file=extensions/sd-simple-dimension-preset/simple-preset.txt", { cache: "no-store" })
-    .then((response) => {
-      if (!response.ok) throw new Error('Failed to fetch simple-preset.txt');
-      return response.text();
-    })
-    .then((text) => {
-      const lines = text.split('\n');
-      let Label = null;
-      let BoxContent = '';
+function LoadSimplePreset(box, loadedOpts) {
+  try {
+    const text = loadedOpts.simple_dimension_preset_config
+    const lines = text.split('\n');
+    let Label = null;
+    let BoxContent = '';
 
-      lines.forEach((line) => {
-        const textLine = line.trim();
+    lines.forEach((line) => {
+      const textLine = line.trim();
 
-        if (textLine.startsWith('>')) {
-          Label = textLine.replace('>', '').trim();
-          const SimpleRLabel = document.createElement('div');
-          SimpleRLabel.id = 'Simple-R-Label';
-          SimpleRLabel.innerText = `${Label}`;
-          BoxContent += SimpleRLabel.outerHTML;
-        } else if (textLine.includes('x') && !textLine.startsWith('#')) {
-          const [width, height] = textLine.split('x').map(Number);
+      if (textLine.startsWith('>')) {
+        Label = textLine.replace('>', '').trim();
+        const SimpleRLabel = document.createElement('div');
+        SimpleRLabel.id = 'Simple-R-Label';
+        SimpleRLabel.innerText = `${Label}`;
+        BoxContent += SimpleRLabel.outerHTML;
+      } else if (textLine.includes('x') && !textLine.startsWith('#')) {
+        const [width, height] = textLine.split('x').map(Number);
 
-          if (!isNaN(width) && !isNaN(height)) {
-            const SimpleRButton = document.createElement('button');
-            SimpleRButton.id = 'Simple-R-Button';
-            SimpleRButton.setAttribute('data-width', width);
-            SimpleRButton.setAttribute('data-height', height);
-            SimpleRButton.innerText = `${width} x ${height}`;
-            BoxContent += SimpleRButton.outerHTML;
+        if (!isNaN(width) && !isNaN(height)) {
+          const SimpleRButton = document.createElement('button');
+          SimpleRButton.id = 'Simple-R-Button';
+          SimpleRButton.setAttribute('data-width', width);
+          SimpleRButton.setAttribute('data-height', height);
+          SimpleRButton.innerText = `${width} x ${height}`;
+          BoxContent += SimpleRButton.outerHTML;
+        }
+      }
+    });
+
+    box.innerHTML = BoxContent;
+
+    box.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const W = btn.getAttribute('data-width');
+        const H = btn.getAttribute('data-height');
+
+        const txt2imgTab = document.getElementById('tab_txt2img');
+        const img2imgTab = document.getElementById('tab_img2img');
+
+        if (txt2imgTab && txt2imgTab.style.display === 'block') {
+          const txt2imgW = document.querySelector('#txt2img_width input[type="number"]');
+          const txt2imgH = document.querySelector('#txt2img_height input[type="number"]');
+
+          if (txt2imgW && txt2imgH) {
+            txt2imgW.value = W;
+            txt2imgH.value = H;
+            updateInput(txt2imgW);
+            updateInput(txt2imgH);
+          }
+        } else if (img2imgTab && img2imgTab.style.display === 'block') {
+          const img2imgW = document.querySelector('#img2img_width input[type="number"]');
+          const img2imgH = document.querySelector('#img2img_height input[type="number"]');
+
+          if (img2imgW && img2imgH) {
+            img2imgW.value = W;
+            img2imgH.value = H;
+            updateInput(img2imgW);
+            updateInput(img2imgH);
           }
         }
       });
-
-      box.innerHTML = BoxContent;
-
-      box.querySelectorAll('button').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const W = btn.getAttribute('data-width');
-          const H = btn.getAttribute('data-height');
-
-          const txt2imgTab = document.getElementById('tab_txt2img');
-          const img2imgTab = document.getElementById('tab_img2img');
-          
-          if (txt2imgTab && txt2imgTab.style.display === 'block') {
-            const txt2imgW = document.querySelector('#txt2img_width input[type="number"]');
-            const txt2imgH = document.querySelector('#txt2img_height input[type="number"]');
-
-            if (txt2imgW && txt2imgH) {
-              txt2imgW.value = W;
-              txt2imgH.value = H;
-              updateInput(txt2imgW);
-              updateInput(txt2imgH);
-            }
-          } else if (img2imgTab && img2imgTab.style.display === 'block') {
-            const img2imgW = document.querySelector('#img2img_width input[type="number"]');
-            const img2imgH = document.querySelector('#img2img_height input[type="number"]');
-
-            if (img2imgW && img2imgH) {
-              img2imgW.value = W;
-              img2imgH.value = H;
-              updateInput(img2imgW);
-              updateInput(img2imgH);
-            }
-          }
-        });
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      box.innerText = "Simple Dimension Preset Die.";
     });
+
+  } catch (err) {
+    console.error(err);
+    box.innerText = "Simple Dimension Preset Die.";
+  }
 }
 
 function SimpleRBoxPosition(btn, box) {
@@ -102,7 +98,7 @@ function SimpleREvent(btn, box) {
   });
 }
 
-onUiLoaded(function () {
+onUiLoaded( async()  =>{
   let rows;
   let isThatForge = gradioApp().querySelector('.gradio-container-4-40-0') !== null;
 
@@ -144,6 +140,17 @@ onUiLoaded(function () {
   SimpleRdiv.appendChild(SimpleRButton);
   SimpleRdiv.appendChild(SimpleRBox);
 
+  async function waitForOpts() {
+    for (; ;) {
+      if (window.opts && Object.keys(window.opts).length) {
+        return window.opts;
+      }
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+  }
+
+  const loadedOpts = await waitForOpts();
+
   rows.forEach((row, index) => {
     const clone = index === 0 ? SimpleRdiv : SimpleRdiv.cloneNode(true);
     row.insertBefore(clone, switchBtns[index]);
@@ -151,7 +158,7 @@ onUiLoaded(function () {
     const btn = clone.querySelector('#Simple-R-Main-Button');
     const box = clone.querySelector('#Simple-R-Box');
 
-    LoadSimplePreset(box);
+    LoadSimplePreset(box, loadedOpts);
     SimpleREvent(btn, box);
   });
 
