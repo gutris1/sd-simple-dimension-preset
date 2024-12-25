@@ -5,7 +5,16 @@
 
 #Simple-R-Main-Button {
   padding: 0;
-  border: none;
+  box-shadow: none;
+}
+
+#Simple-R-Main-Button svg {
+  fill: var(--button-secondary-text-color);
+  transition: 0.4s ease;
+}
+
+#Simple-R-Main-Button svg:hover {
+  fill: var(--button-secondary-text-color-hover);
 }
 
 #Simple-R-Box {
@@ -38,4 +47,60 @@
 #Simple-R-Button:hover {
   color: var(--primary-500);
   background: var(--input-background-fill);
+}
+
+#setting_simple_dimension_preset_doc details {
+  padding-left: 1.5px;
+}
+
+#setting_simple_dimension_preset_doc details .code_wrap {
+  box-shadow: 0 0 0 1.5px var(--body-text-color);
+  width: 50%;
+  filter: brightness(0.7);
+  border-radius: 10px;
+  border: 0.1px solid transparent;
+  transition: 0.4s ease;
+}
+
+#setting_simple_dimension_preset_doc details .code_wrap:hover {
+  filter: brightness(1);
+}
+
+#setting_simple_dimension_preset_doc details pre {
+  padding-top: 0;
+  background: transparent;
+  padding-bottom: 0;
+}
+
+#setting_simple_dimension_preset_config {
+  border-color: transparent;
+  margin-top: 1px;
+}
+
+#setting_simple_dimension_preset_config .codemirror-wrapper {
+  padding: 1.5px;
+}
+
+#setting_simple_dimension_preset_config .cm-editor {
+  border-radius: 10px;
+  box-shadow: 0 0 0 1.5px var(--body-text-color-subdued);
+  filter: brightness(0.7);
+  transition: 0.4s ease;
+}
+
+#setting_simple_dimension_preset_config .cm-editor:hover {
+  filter: brightness(1);
+}
+
+#setting_simple_dimension_preset_config .cm-editor.cm-focused {
+  box-shadow: 0 0 0 1.5px var(--color-accent);
+  filter: brightness(1);
+}
+
+#setting_simple_dimension_preset_config div[data-testid="block-label"] {
+  display: none;
+}
+
+#setting_simple_dimension_preset_config .cm-gutter.cm-foldGutter {
+  margin-right: -5px;
 }
