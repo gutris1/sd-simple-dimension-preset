@@ -1,4 +1,9 @@
-<details><summary>Click for examples</summary>
+## SD Simple Dimension Preset
+<br>
+Click <code>Examples</code> to see the default settings.<br>
+Click <code>Save</code> button to save the settings, then Refresh Webpage.<br>
+<br>
+<details><summary>Examples</summary>
 <p>
 
 ```
@@ -22,3 +27,5 @@
 
 </p>
 </details>
+<br>
+<br>
