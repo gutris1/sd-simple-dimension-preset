@@ -90,10 +90,10 @@ function SimpleREvent(btn, box) {
     box.style.display = SimpleRBox;
 
     if (SimpleRBox === 'block') {
-      btn.style.border = '2px solid var(--primary-500)';
+      btn.style.boxShadow = '0 0 0 1.5px var(--button-secondary-text-color)';
       SimpleRBoxPosition(btn, box);
     } else {
-      btn.style.border = 'none';
+      btn.style.boxShadow = 'none';
     }
   });
 }
@@ -127,7 +127,7 @@ onUiLoaded( async()  =>{
         M15 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm
         -2.83 0a3.001 3.001 0 0 1 5.66 0
         H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17z
-      " fill="var(--button-secondary-text-color)">
+      " fill="currentColor">
       </path>
     </svg>
   `;
@@ -176,7 +176,7 @@ onUiLoaded( async()  =>{
       const btn = box.parentElement.querySelector('#Simple-R-Main-Button');
       if (box.style.display === 'block' && !box.contains(e.target) && !btn.contains(e.target)) {
         box.style.display = 'none';
-        btn.style.border = 'none';
+        btn.style.boxShadow = 'none';
       }
     });
   }
