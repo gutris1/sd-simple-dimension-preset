@@ -4,6 +4,7 @@ function LoadSimplePreset(box, loadedOpts) {
     const lines = text.split('\n');
     let Label = null;
     let BoxContent = '';
+    //console.log(text);
 
     lines.forEach((line) => {
       const textLine = line.trim();
@@ -90,12 +91,70 @@ function SimpleREvent(btn, box) {
     box.style.display = SimpleRBox;
 
     if (SimpleRBox === 'block') {
-      btn.style.boxShadow = '0 0 0 1.5px var(--button-secondary-text-color)';
+      btn.style.boxShadow = '0 0 0 1.5px var(--button-secondary-text-color-hover)';
+      btn.querySelector('svg').style.fill = 'var(--button-secondary-text-color-hover)';
       SimpleRBoxPosition(btn, box);
     } else {
       btn.style.boxShadow = 'none';
+      btn.querySelector('svg').style.fill = '';
     }
   });
+}
+
+function ForceSimpleSave(inputs) {
+  window.getRunningScript = () => () => new Error().stack.match(/(?:[a-z]+:\/\/)?[^ \n]*\.js/)[0];
+
+  var FilePath = getRunningScript()().match(/file=([^\/]+\/[^\/]+)\//);
+
+  if (FilePath) {
+    var Path = FilePath[1];
+    var Name = Path.split('/').pop() + ".txt";
+    console.log(Path);
+    console.log(Name);
+  }
+}
+
+function SimpleSaveButton() {
+  const column = gradioApp().querySelector('#column_settings_simple-dimension-preset');
+  const config = gradioApp().querySelector('#setting_simple_dimension_preset_config');
+
+  if (column && config) {
+    const SaveDiv = document.createElement('div');
+    SaveDiv.id = 'setting_simple_dimension_preset_save';
+
+    const SaveButton = document.createElement('button');
+    SaveButton.id = 'setting_simple_dimension_preset_save_button';
+    SaveButton.className = 'lg primary gradio-button svelte-cmf5ev';
+    SaveButton.textContent = 'Save';
+    SaveButton.title = 'Save Simple Preset';
+
+    SaveDiv.appendChild(SaveButton);
+    column.insertBefore(SaveDiv, config.nextSibling);
+
+    SaveButton.addEventListener('click', () => {
+      const cmContent = config.querySelector('.cm-content');
+      if (cmContent) {
+        const lines = Array.from(cmContent.children);
+        let plainText = '';
+
+        lines.forEach((line) => {
+          if (line.classList.contains('cm-line')) {
+            plainText += line.textContent + '\n';
+          } else if (line.tagName.toLowerCase() === 'br') {
+            plainText += '\n';
+          }
+        });
+
+        const trimmedText = plainText.trim();
+
+        const textarea = document.querySelector('#simple_dimension_preset_holder > label > textarea');
+        if (textarea) {
+          textarea.value = trimmedText;
+          updateInput(textarea);
+        }
+      }
+    });
+  }
 }
 
 onUiLoaded( async()  =>{
@@ -127,7 +186,7 @@ onUiLoaded( async()  =>{
         M15 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm
         -2.83 0a3.001 3.001 0 0 1 5.66 0
         H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17z
-      " fill="currentColor">
+      " fill="">
       </path>
     </svg>
   `;
@@ -177,9 +236,12 @@ onUiLoaded( async()  =>{
       if (box.style.display === 'block' && !box.contains(e.target) && !btn.contains(e.target)) {
         box.style.display = 'none';
         btn.style.boxShadow = 'none';
+        btn.querySelector('svg').style.fill = '';
       }
     });
   }
+
+  SimpleSaveButton();
 
   document.addEventListener('mousedown', ClickOutsideEL);
   document.addEventListener('touchstart', ClickOutsideEL, { passive: true });
