@@ -20,7 +20,8 @@ shared.options_templates.update(shared.options_section(('simple-dimension-preset
 def saving_preset(inputs):
     with default_path.open("w", encoding="utf-8") as file:
         file.write(inputs)
-    print(f"{inputs}")
+
+    shared.options_templates['simple_dimension_preset_config'].value = inputs
 
 class Script(scripts.Script):
     def title(self):
