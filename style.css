@@ -104,3 +104,19 @@
 #setting_simple_dimension_preset_config .cm-gutter.cm-foldGutter {
   margin-right: -5px;
 }
+
+#setting_simple_dimension_preset_config .cm-gutter.cm-lineNumbers {
+  margin-left: 3px;
+}
+
+#setting_simple_dimension_preset_save {
+  position: relative;
+  top: 10px;
+}
+
+#setting_simple_dimension_preset_save_button {
+  border-radius: var(--button-large-radius);
+  width: 150px;
+  font-size: 20px;
+  line-height: 1;
+}
