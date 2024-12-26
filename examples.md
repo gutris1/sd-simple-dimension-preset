@@ -1,9 +1,9 @@
 ## SD Simple Dimension Preset
 <br>
-Click <code>Examples</code> to see the default settings.<br>
-Click <code>Save</code> button to save the settings, then Refresh Webpage.<br>
+Click <code>Info</code> to see details.<br>
+Click <code>Save</code> button to save the settings, then go back to the extension.<br>
 <br>
-<details><summary>Examples</summary>
+<details><summary>Info</summary>
 <p>
 
 ```
