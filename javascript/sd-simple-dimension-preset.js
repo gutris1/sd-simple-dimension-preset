@@ -180,13 +180,13 @@ function SimpleRBoxPosition(btn, box, set) {
     box.style.right = '1%';
     set.style.right = '0rem';
     setTimeout(() => {
-      set.style.right = '4.5rem';
+      set.style.right = '4.2rem';
     }, 10);
   } else {
     box.style.left = '1%';
     set.style.left = '0rem';
     setTimeout(() => {
-      set.style.left = '4.5rem';
+      set.style.left = '4.2rem';
     }, 10);
   }
 }
