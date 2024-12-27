@@ -17,12 +17,6 @@ shared.options_templates.update(shared.options_section(('simple-dimension-preset
     "simple_dimension_preset_config": shared.OptionInfo(default_presets, 'simple dimension preset', gr.Code),
 }))
 
-def saving_preset(inputs):
-    with default_path.open("w", encoding="utf-8") as file:
-        file.write(inputs)
-
-    shared.options_templates['simple_dimension_preset_config'].value = inputs
-
 class Script(scripts.Script):
     def title(self):
         return "Simple Dimension Preset"
@@ -39,7 +33,13 @@ class Script(scripts.Script):
         )
 
         testBox.change(
-            fn=saving_preset,
+            fn=self.saving_preset,
             inputs=[testBox],
             outputs=[]
         )
+
+    def saving_preset(self, inputs):
+        with default_path.open("w", encoding="utf-8") as file:
+            file.write(inputs)
+
+        shared.options_templates['simple_dimension_preset_config'].value = inputs
