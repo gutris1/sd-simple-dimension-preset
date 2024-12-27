@@ -32,22 +32,28 @@
 
 #Simple-Setting-Button svg {
   transition: 0.4s ease;
-  fill: var(--button-secondary-text-color);
+  stroke: var(--button-secondary-text-color);
 }
 
 #Simple-Setting-Button svg:hover {
-  fill: var(--button-secondary-text-color-hover);
+  stroke: var(--button-secondary-text-color-hover);
 }
 
 #Simple-R-Box {
+  margin-top: 2px;
   position: absolute;
   width: 11.4rem;
   z-index: 9999;
-  border: 2px solid var(--primary-500);
-  border-radius: 0.8rem;
+  box-shadow: 0 0 0 2px var(--button-secondary-text-color);
+  border-radius: 0.5rem;
   padding: 5px;
   background: var(--background-fill-primary);
   text-align: center;
+  transition: 0.4s ease;
+}
+
+#Simple-R-Box:hover {
+  box-shadow: 0 0 0 2px var(--button-secondary-text-color-hover);
 }
 
 #Simple-R-Label {
