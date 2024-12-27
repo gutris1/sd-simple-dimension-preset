@@ -42,39 +42,41 @@
 #Simple-R-Box {
   margin-top: 2px;
   position: absolute;
-  width: 11.4rem;
+  width: 10.5rem;
   z-index: 9999;
-  box-shadow: 0 0 0 2px var(--button-secondary-text-color);
+  box-shadow: 0 0 0 1.5px var(--button-secondary-text-color);
   border-radius: 0.5rem;
-  padding: 5px;
-  background: var(--background-fill-primary);
+  padding-top: 5px;
+  padding-bottom: 4px;
+  background: var(--body-background-fill);
   text-align: center;
   transition: 0.4s ease;
 }
 
 #Simple-R-Box:hover {
-  box-shadow: 0 0 0 2px var(--button-secondary-text-color-hover);
+  box-shadow: 0 0 0 1.5px var(--button-secondary-text-color-hover);
 }
 
 #Simple-R-Label {
   margin-top: 10px;
   text-align: center;
+  pointer-events: none;
 }
 
 #Simple-R-Button {
   margin: 2px;
-  padding-right: 5px;
-  padding-left: 5px;
-  border: 1px solid var(--primary-500);
-  background: transparent;
+  padding-right: 3px;
+  padding-left: 3px;
+  box-shadow: 0 0 0 1.5px transparent;
+  background: var(--input-background-fill);
   border-radius: 0.25rem;
   cursor: pointer;
   transition: 0.4s ease;
 }
 
 #Simple-R-Button:hover {
-  color: var(--primary-500);
-  background: var(--input-background-fill);
+  box-shadow: 0 0 0 1.5px var(--button-secondary-text-color-hover);
+  background: transparent;  
 }
 
 #setting_simple_dimension_preset_doc details {
