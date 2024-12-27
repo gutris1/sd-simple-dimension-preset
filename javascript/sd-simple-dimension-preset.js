@@ -1,51 +1,45 @@
-function LoadSimplePreset(box) {
-  window.getRunningScript = () => () => new Error().stack.match(/(?:[a-z]+:\/\/)?[^ \n]*\.js/)[0];
-  let FilePath = getRunningScript()().match(/file=([^\/]+\/[^\/]+)\//);
-
-  if (FilePath) {
-    let Path = `file=${FilePath[1]}/`;
-    let NameFile = 'simple-preset.txt';
-
-    fetch(Path + NameFile)
-      .then(response => {
-        if (!response.ok) return;
-        return response.text();
-      })
-      .then(text => {
-        let lines = text.split('\n');
-        let Label = null;
-        let BoxContent = '';
-
-        lines.forEach((line) => {
-          const textLine = line.trim();
-
-          if (textLine.startsWith('>')) {
-            Label = textLine.replace('>', '').trim();
-            const SimpleRLabel = document.createElement('div');
-            SimpleRLabel.id = 'Simple-R-Label';
-            SimpleRLabel.innerText = `${Label}`;
-            BoxContent += SimpleRLabel.outerHTML;
-          } else if (textLine.includes('x') && !textLine.startsWith('#')) {
-            const [width, height] = textLine.split('x').map(Number);
-
-            if (!isNaN(width) && !isNaN(height)) {
-              const SimpleRButton = document.createElement('button');
-              SimpleRButton.id = 'Simple-R-Button';
-              SimpleRButton.setAttribute('data-width', width);
-              SimpleRButton.setAttribute('data-height', height);
-              SimpleRButton.innerText = `${width} x ${height}`;
-              BoxContent += SimpleRButton.outerHTML;
-            }
-          }
-        });
-
-        box.innerHTML = BoxContent;
-        addButtonEvents(box);
-      })
-      .catch(error => {
-        console.log("Error:", error);
-      });
+async function waitForOpts() {
+  for (; ;) {
+    if (window.opts && Object.keys(window.opts).length) {
+      return window.opts;
+    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
+}
+
+async function LoadSimplePreset(box) {
+  var loadedOpts = await waitForOpts();
+  var text = loadedOpts.simple_dimension_preset_config
+  var lines = text.split('\n');
+  var Label = null;
+  var BoxContent = '';
+  console.log(text);
+
+  lines.forEach((line) => {
+    const textLine = line.trim();
+
+    if (textLine.startsWith('>')) {
+      Label = textLine.replace('>', '').trim();
+      const SimpleRLabel = document.createElement('div');
+      SimpleRLabel.id = 'Simple-R-Label';
+      SimpleRLabel.innerText = `${Label}`;
+      BoxContent += SimpleRLabel.outerHTML;
+    } else if (textLine.includes('x') && !textLine.startsWith('#')) {
+      const [width, height] = textLine.split('x').map(Number);
+
+      if (!isNaN(width) && !isNaN(height)) {
+        const SimpleRButton = document.createElement('button');
+        SimpleRButton.id = 'Simple-R-Button';
+        SimpleRButton.setAttribute('data-width', width);
+        SimpleRButton.setAttribute('data-height', height);
+        SimpleRButton.innerText = `${width} x ${height}`;
+        BoxContent += SimpleRButton.outerHTML;
+      }
+    }
+  });
+
+  box.innerHTML = BoxContent;
+  addButtonEvents(box);
 }
 
 function addButtonEvents(box) {
@@ -100,8 +94,7 @@ function UpdateSimpleBox(box, trimmedText) {
           <button 
             id="Simple-R-Button" 
             data-width="${width}" 
-            data-height="${height}"
-            >
+            data-height="${height}">
             ${width} x ${height}
           </button>
         `;
@@ -216,6 +209,10 @@ function SimpleREvent(btn, box, set) {
       btn.querySelector('svg').style.fill = '';
     }
   });
+
+  set.addEventListener('click', () => {
+    MoveToSettings();
+  });
 }
 
 function MoveToSettings() {
@@ -248,17 +245,13 @@ onUiLoaded(function () {
   SimpleRButton.id = 'Simple-R-Main-Button';
   SimpleRButton.title = 'Simple Dimension Preset';
   SimpleRButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-        x="0px" y="0px" width="40" height="40"
-        viewBox="0 0 24 18" fill="transparent">
-      <path d=" 
-        M9 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z
-        M6.17 5a3.001 3.001 0 0 1 5.66 0
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+        width="40" height="40" viewBox="0 0 24 18" fill="transparent">
+      <path fill=""
+        d="M9 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z M6.17 5a3.001 3.001 0 0 1 5.66 0
         H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17z
-        M15 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm
-        -2.83 0a3.001 3.001 0 0 1 5.66 0
-        H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17z
-      " fill="">
+        M15 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm -2.83 0a3.001 3.001 0 0 1 5.66 0
+        H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17z">
       </path>
     </svg>
   `;
@@ -273,18 +266,21 @@ onUiLoaded(function () {
   SimpleSettingButton.title = 'Go To Settings';
   SimpleSettingButton.style.display = 'none';
   SimpleSettingButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-        x="0px" y="0px" width="35" height="35"
-        viewBox="0 0 24 18" fill="transparent">
-      <path d=" 
-        M9 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z
-        M6.17 5a3.001 3.001 0 0 1 5.66 0
-        H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17z
-        M15 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm
-        -2.83 0a3.001 3.001 0 0 1 5.66 0
-        H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17z
-      " fill="">
-      </path>
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
+        width="35px" height="35px" viewBox="0 0 32 32">
+      <path
+        d="M27.758,10.366 l-1-1.732 c-0.552-0.957-1.775-1.284-2.732-0.732
+        L23.5,8.206 C21.5,9.36,19,7.917,19,5.608 V5 c0-1.105-0.895-2-2-2 h-2
+        c-1.105,0-2,0.895-2,2 v0.608 c0,2.309-2.5,3.753-4.5,2.598 L7.974,7.902
+        C7.017,7.35,5.794,7.677,5.242,8.634 l-1,1.732 c-0.552,0.957-0.225,2.18,0.732,2.732
+        L5.5,13.402 c2,1.155,2,4.041,0,5.196 l-0.526,0.304 c-0.957,0.552-1.284,1.775-0.732,2.732
+        l1,1.732 c0.552,0.957,1.775,1.284,2.732,0.732 L8.5,23.794 c2-1.155,4.5,0.289,4.5,2.598
+        V27 c0,1.105,0.895,2,2,2 h2 c1.105,0,2-0.895,2-2 v-0.608 c0-2.309,2.5-3.753,4.5-2.598
+        l0.526,0.304 c0.957,0.552,2.18,0.225,2.732-0.732 l1-1.732 c0.552-0.957,0.225-2.18-0.732-2.732
+        L26.5,18.598 c-2-1.155-2-4.041,0-5.196 l0.526-0.304 C27.983,12.546,28.311,11.323,27.758,10.366 z
+        M16,20 a4,4 0 1,1 0,-8 a4,4 0 1,1 0,8 z"
+        fill="transparent" stroke="" stroke-width="2"
+      />
     </svg>
   `;
 
@@ -328,10 +324,6 @@ onUiLoaded(function () {
       }
     });
   }
-
-  SimpleSettingButton.addEventListener('click', () => {
-    MoveToSettings();
-  });
 
   SimpleSaveButton(SimpleRBox);
 
