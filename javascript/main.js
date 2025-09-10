@@ -257,7 +257,7 @@ onUiLoaded(async () => {
   Gear = createEL('button', {
     id: `${SDP}-Setting-Button`,
     class: switchBtnClasses,
-    title: 'Go To Settings',
+    title: 'open setting',
     html: SDSimpleDimensionPreset.settingButton(),
     onclick: () => displaySetting()
   }),
