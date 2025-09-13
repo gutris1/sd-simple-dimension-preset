@@ -8,7 +8,6 @@ onUiLoaded(async () => {
   mainBtn = `${sdp}-main-button`,
   activeBtn = `.${mainBtn}.${sdps}`,
 
-  gradioApp = document.querySelector('body > gradio-app'),
   Row = document.getElementById(`${SDP}-Row`),
   Column = document.getElementById(`${SDP}-Column`),
   saveButton = document.getElementById(`${SDP}-Save-Button`),
@@ -20,7 +19,7 @@ onUiLoaded(async () => {
       else if (k === 'style' && typeof v === 'object') Object.assign(l.style, v);
       else if (k === 'html') l.innerHTML = v;
       else if (k === 'text') l.textContent = v;
-      else if (k === 'children') l.append(...(Array.isArray(v) ? v : [v]));
+      else if (k === 'append') l.append(...(Array.isArray(v) ? v : [v]));
       else if (k === 'dataset') Object.assign(l.dataset, v);
       else if (k in l) l[k] = v;
       else l.setAttribute(k, v);
@@ -32,10 +31,10 @@ onUiLoaded(async () => {
     Box.querySelectorAll('span').forEach((btn) => {
       btn.onclick = () => {
         const w = btn.dataset.width, h = btn.dataset.height,
-        activeTab = gradioApp.querySelector("#tab_txt2img[style*='display: block'], #tab_img2img[style*='display: block']"),
+        activeTab = gradioApp().querySelector("#tab_txt2img[style*='display: block'], #tab_img2img[style*='display: block']"),
         tabName = activeTab.id.includes('txt2img') ? 'txt2img' : 'img2img',
-        wn = gradioApp.querySelector(`#${tabName}_width input[type='number']`),
-        hn = gradioApp.querySelector(`#${tabName}_height input[type='number']`);
+        wn = gradioApp().querySelector(`#${tabName}_width input[type='number']`),
+        hn = gradioApp().querySelector(`#${tabName}_height input[type='number']`);
         if (wn && hn) {
           wn.value = w; hn.value = h;
           updateInput(wn); updateInput(hn);
@@ -120,7 +119,7 @@ onUiLoaded(async () => {
       codeWrapper = editor.querySelector('.codemirror-wrapper'),
       exCloseButton = createEL('span', { id: `${SDP}-Example-Close-Button`, html: SDSimpleDimensionPreset.cross(), title: 'close info', onclick: function () { this.parentElement.style.display = ''; } }),
       exPre = createEL('pre', { html: SDSimpleDimensionPreset.example() }),
-      exInfo = createEL('div', {  id: `${SDP}-Example-Info`, children: [exCloseButton, exPre] }),
+      exInfo = createEL('div', {  id: `${SDP}-Example-Info`, append: [exCloseButton, exPre] }),
       exDisplayButton = createEL('span', { id: `${SDP}-Example-Display-Button`, html: '?', title: 'display info', onclick: () => exInfo.style.display = 'flex' }),
       frame = createEL('span', { id: `${SDP}-Editor-Frame` }),
       link = createEL('a', {
@@ -153,8 +152,8 @@ onUiLoaded(async () => {
         };
 
         document.getElementById(`${SDP}-Load-Button`).click();
-        gradioApp.querySelector('.gradio-container > .main').append(document.querySelector(`#txt2img_script_container #${SDP}-Row`));
-        gradioApp.querySelector(`#img2img_script_container #${SDP}-Row`)?.remove();
+        gradioApp().querySelector('.gradio-container > .main').append(document.querySelector(`#txt2img_script_container #${SDP}-Row`));
+        gradioApp().querySelector(`#img2img_script_container #${SDP}-Row`)?.remove();
       }, 1000);
 
       setTimeout(() => {
@@ -174,11 +173,11 @@ onUiLoaded(async () => {
   },
 
   displaySetting = () => {
-    let g = gradioApp ? gradioApp.offsetWidth : 0;
-    closeBox(gradioApp.querySelector(activeBtn));
+    let g = gradioApp().offsetWidth;
+    closeBox(gradioApp().querySelector(activeBtn));
     document.body.style.overflow = 'hidden';
-    const n = gradioApp.offsetWidth, w = n - g;
-    if (w > 0) gradioApp.style.paddingRight = w + 'px';
+    const n = gradioApp().offsetWidth, w = n - g;
+    if (w > 0) gradioApp().style.paddingRight = w + 'px';
     [Row, Column].forEach(el => el.classList.add(sdps));
     Row.style.visibility = 'visible';
     setTimeout(() => (Column.classList.remove(sdps), Row.focus()), 300);
@@ -195,7 +194,7 @@ onUiLoaded(async () => {
     Column.classList.add(sdp);
     Row.onkeydown = exitButton.onclick = null;
     setTimeout(() => requestAnimationFrame(() => {
-      gradioApp.style.paddingRight = document.body.style.overflow = Row.style.visibility = '';
+      gradioApp().style.paddingRight = document.body.style.overflow = Row.style.visibility = '';
       Row.blur?.() || document.activeElement === Row && document.body.focus();
       Column.classList.remove(sdp);
     }), 150);
@@ -250,7 +249,7 @@ onUiLoaded(async () => {
     }
   },
 
-  switchBtns = gradioApp.querySelectorAll('#txt2img_res_switch_btn, #img2img_res_switch_btn'),
+  switchBtns = gradioApp().querySelectorAll('#txt2img_res_switch_btn, #img2img_res_switch_btn'),
   switchBtnClasses = Array.from(switchBtns[0].classList),
 
   Box = createEL('div', { id: `${SDP}-Box` }),
@@ -268,7 +267,7 @@ onUiLoaded(async () => {
     title: 'close Setting'
   }),
 
-  parent = createEL('div', { id: SDP, children: [Gear, Box] });
+  parent = createEL('div', { id: SDP, append: [Gear, Box] });
   document.body.append(parent);
 
   ['txt2img', 'img2img'].forEach((tabName, index) => {
@@ -279,7 +278,7 @@ onUiLoaded(async () => {
       html: SDSimpleDimensionPreset.mainButton()
     }),
 
-    wrap = createEL('div', { id: `${SDP}-Wrap-${tabName}`, class: `${sdp}-wrap`, children: Button });
+    wrap = createEL('div', { id: `${SDP}-Wrap-${tabName}`, class: `${sdp}-wrap`, append: Button });
     switchBtns[index].parentNode.insertBefore(wrap, switchBtns[index]);
 
     Button.onclick = () => {
@@ -296,7 +295,7 @@ onUiLoaded(async () => {
 
   ['mousedown', 'touchstart'].forEach(evt => {
     document.addEventListener(evt, e => {
-      const btn = gradioApp.querySelector(activeBtn);
+      const btn = gradioApp().querySelector(activeBtn);
       if (parent.classList.contains(sdps) && (
         !btn || (!btn.contains(e.target) &&
         !Box.contains(e.target) &&
@@ -307,7 +306,7 @@ onUiLoaded(async () => {
 
   window.addEventListener('resize', () => {
     if (parent.classList.contains(sdps)) {
-      const btn = gradioApp.querySelector(activeBtn);
+      const btn = gradioApp().querySelector(activeBtn);
       closeBox(btn);
       displayBox(btn, true);
     }
