@@ -26,10 +26,7 @@ class SDSimpleDimensionPreset(scripts.Script):
         self.preset = base / 'simple-preset.txt'
 
     def load(self):
-        if self.preset.exists():
-            v = self.preset.read_text(encoding='utf-8')
-        else:
-            v = default
+        v = self.preset.read_text(encoding='utf-8') if self.preset.exists() else default
         yield gr.Code.update(value=v)
 
     def save(self, i):
