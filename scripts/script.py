@@ -3,31 +3,14 @@ import gradio as gr
 
 from modules import scripts
 
-base = Path(scripts.basedir())
-
-default = """# square
-1024 x 1024
-
-> Portrait
-640 x 1536
-768 x 1344
-832 x 1216
-896 x 1152
-
-> Landscape
-1536 x 640
-1344 x 768
-1216 x 832
-1152 x 896
-"""
+p = Path(scripts.basedir())
 
 class SDSimpleDimensionPreset(scripts.Script):
     def __init__(self):
-        self.preset = base / 'simple-preset.txt'
+        self.preset = p / 'simple-preset.txt'
 
     def load(self):
-        v = self.preset.read_text(encoding='utf-8') if self.preset.exists() else default
-        yield gr.Code.update(value=v)
+        yield gr.Code.update(value=self.preset.read_text(encoding='utf-8'))
 
     def save(self, i):
         self.preset.write_text(i, encoding='utf-8')

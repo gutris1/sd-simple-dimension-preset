@@ -6,14 +6,14 @@
   --sd-simple-dp-shadow: #4d4d4d8f;
   --sd-simple-dp-code-selection: #add6ff;
   --sd-simple-dp-code-eta-bg: #add6ffcc;
-  --sd-simple-dp-row-bg: rgb(200 200 200 / 80%);
+  --sd-simple-dp-row-bg: rgb(200 200 200 / 95%);
 }
 
 .dark {
   --sd-simple-dp-shadow: #ecf2f747;
   --sd-simple-dp-code-selection: #264f78;
   --sd-simple-dp-code-eta-bg: #264f78cc;
-  --sd-simple-dp-row-bg: rgb(0 0 0 / 80%);
+  --sd-simple-dp-row-bg: rgb(18 18 18 / 95%);;
 }
 
 #SD-Simple-DP-Main-Button-txt2img,

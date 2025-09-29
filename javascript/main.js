@@ -75,8 +75,9 @@ onUiLoaded(async () => {
     registerEvents();
   },
 
-  loadPreset = () => {
-    updateBox(window.SDSimpleDPpreset || cm.state.doc.toString().trim());
+  loadPreset = async () => {
+    const res = await fetch(window.SDSimpleDPpath), text = await res.text();
+    updateBox(text);
   },
 
   savePreset = () => {
@@ -160,7 +161,6 @@ onUiLoaded(async () => {
           const ed = editor.querySelector('.cm-editor');
           cm = EditorView.findFromDOM(ed);
           obsins = autoCorrect(cm, editor);
-          loadPreset();
 
           ed.addEventListener('focusin', () => frame.classList.add(sdps));
           ed.addEventListener('focusout', () => {
@@ -312,6 +312,7 @@ onUiLoaded(async () => {
     }
   });
 
+  loadPreset();
   createSetting();
 
   Row.tabIndex = 0;
@@ -321,21 +322,11 @@ onUiLoaded(async () => {
 document.addEventListener('DOMContentLoaded', async () => {
   window.getRunningScript = () => new Error().stack.match(/file=[^ \n]*\.js/)?.[0];
   const path = getRunningScript()?.match(/file=[^\/]+\/[^\/]+\//)?.[0];
-
-  if (path) {
-    try {
-      const r = await fetch(`${path}simple-preset.txt?ts=${Date.now()}`);
-      window.SDSimpleDPpreset = r.ok ? await r.text() : '';
-    } catch {
-      window.SDSimpleDPpreset = '';
-    }
-  }
+  if (path) window.SDSimpleDPpath = `${path}simple-preset.txt?ts=${Date.now()}`;
 
   document.body.append(Object.assign(document.createElement('style'), {
     id: 'SD-Simple-DP-Style',
-    textContent: /firefox/i.test(navigator.userAgent)
-      ? SDSimpleDimensionPreset.fox()
-      : SDSimpleDimensionPreset.webkit()
+    textContent: /firefox/i.test(navigator.userAgent) ? SDSimpleDimensionPreset.fox() : SDSimpleDimensionPreset.webkit()
   }));
 });
 
