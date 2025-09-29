@@ -2,15 +2,18 @@
 
 since SDXL, aspect ratios are less relevant due to the weird dimensions used in the models.<br>
 This extension simply inserts those weird width and height values without thinking about what kind of aspect ratio that is.<br>
-
-Usage:<br>
-Click any button to insert the corresponding values.<br>
+<br>
+- Click any button to insert the corresponding values.<br>
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/bea0351b-d5da-4748-bd04-2592432f48e7", width=600px height=auto>
+  <img src="https://github.com/user-attachments/assets/1bc8e445-52a3-40fc-a85c-516ed1bb384e", width=auto height=auto>
 </p>
 <br>
 
-To add more weird values, click the gear icon to go to the Settings.<br>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/c2c9133e-58e2-475a-9e33-28b3a09276ea", width=1000px>
+- To add more weird values, click the gear icon to display the setting box.<br>
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/699f308f-88af-4ffc-b617-619d284cde17", width=auto height=auto>
 </p>
+
+<br>
+
+- Presets are now loaded from and saved to <code>simple-preset.txt</code>.

@@ -1,13 +1,11 @@
 # square
 1024 x 1024
 
-
 > Portrait
 640 x 1536
 768 x 1344
 832 x 1216
 896 x 1152
-
 
 > Landscape
 1536 x 640
