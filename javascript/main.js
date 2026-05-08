@@ -1,5 +1,7 @@
 onUiLoaded(async () => {
-  let cm, obsins;
+  let version = 'v4.1',
+
+  cm, obsins;
   const { EditorView } = await import('https://esm.sh/@codemirror/view@6.4.1'),
 
   SDP = 'SD-Simple-DP',
@@ -125,7 +127,7 @@ onUiLoaded(async () => {
       link = createEL('a', {
         id: `${SDP}-Link`,
         href: 'https://github.com/gutris1/sd-simple-dimension-preset',
-        text: 'v4',
+        text: version,
         target: '_blank',
         rel: 'noopener noreferrer'
       });

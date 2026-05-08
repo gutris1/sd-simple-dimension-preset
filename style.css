@@ -16,6 +16,11 @@
   --sd-simple-dp-row-bg: rgb(18 18 18 / 95%);;
 }
 
+#SD-Simple-DP-Editor > label,
+#SD-Simple-DP-Editor > div.svelte-1yin446 {
+  display: none !important;
+}
+
 #SD-Simple-DP-Main-Button-txt2img,
 #SD-Simple-DP-Main-Button-img2img,
 #SD-Simple-DP-Setting-Button,
